@@ -1,6 +1,18 @@
+import 'package:cm_flutter_2024_2025/models/Address.dart';
+import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
+import 'package:cm_flutter_2024_2025/models/Delivery.dart';
+import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
+import 'package:cm_flutter_2024_2025/models/Driver.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(AddressAdapter());
+  Hive.registerAdapter(ClientDetailsAdapter());
+  Hive.registerAdapter(DeliveryAdapter());
+  Hive.registerAdapter(DriverAdapter());
+  Hive.registerAdapter(DeliveryRouteAdapter());
   runApp(const MyApp());
 }
 
