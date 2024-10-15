@@ -34,7 +34,6 @@ class Delivery {
   @HiveField(8)
   String? pinHash;
 
-
   @HiveField(9)
   DateTime createdAt;
 
