@@ -40,7 +40,7 @@ class DeliveryRoute {
   DeliveryRoute(this.id,this.deliveries);
 
   Delivery? getCurrentDelivery(){
-    if (current_delivery<deliveries.length){
+    if (current_delivery>=deliveries.length){
       return null;
     }else{
       return deliveries[current_delivery];

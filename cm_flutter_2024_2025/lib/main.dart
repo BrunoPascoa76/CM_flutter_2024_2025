@@ -1,3 +1,4 @@
+import 'package:cm_flutter_2024_2025/delivery_details_screen.dart';
 import 'package:cm_flutter_2024_2025/delivery_map.dart';
 import 'package:cm_flutter_2024_2025/utils/QrCodeScanner.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _pageController = PageController(
+      initialPage: 1,
+      keepPage: true
+    );
     return MultiBlocProvider(
       providers: [
         BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
@@ -37,7 +42,10 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const Lobby(),
-          '/deliveryMap': (context) => const DeliveryMapScreen(),
+          '/deliveryMap': (context) => PageView(
+            controller:_pageController,
+            children:const [DeliveryDetailsScreen(),DeliveryMapScreen()]
+          ),
         },
       ),
     );
