@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cm_flutter_2024_2025/models/Address.dart';
+import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
+import 'package:cm_flutter_2024_2025/models/Delivery.dart';
+import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
 import 'package:cm_flutter_2024_2025/queue.dart';
-import 'models/Address.dart';
-import 'models/ClientDetails.dart';
-import 'models/Delivery.dart';
-import 'models/DeliveryRoute.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({super.key});
@@ -20,7 +19,7 @@ class LobbyState extends State<Lobby> {
   bool isReady = false;
   Map<String, dynamic>? messageDetails;
 
-  void _onReadyPressed(DeliveryRouteBloc deliveryRouteBloc) {
+  void _onReadyPressed() {
     Timer.periodic(const Duration(seconds: 5), (timer) async {
       final message = await poolDeliveryMessage();
       if (message != null) {
@@ -114,6 +113,7 @@ class LobbyState extends State<Lobby> {
       );
     }
   }
+  }
 
   void _onAcceptDeliveryPressed() {
     // Handle the accept delivery action
@@ -133,7 +133,6 @@ class LobbyState extends State<Lobby> {
 
   @override
   Widget build(BuildContext context) {
-    final deliveryRouteBloc=BlocProvider.of<DeliveryRouteBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Delivery Lobby'),
@@ -154,7 +153,7 @@ class LobbyState extends State<Lobby> {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildReadyButton(deliveryRouteBloc),
+              _buildReadyButton(),
             ],
           ),
         ),
@@ -238,9 +237,9 @@ class LobbyState extends State<Lobby> {
     );
   }
 
-  Widget _buildReadyButton(DeliveryRouteBloc deliveryRouteBloc) {
+  Widget _buildReadyButton() {
     return ElevatedButton(
-      onPressed: (){_onReadyPressed(deliveryRouteBloc);},
+      onPressed: _onReadyPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: isReady ? Colors.orange : Colors.blue,
         padding: const EdgeInsets.symmetric(vertical: 16),
