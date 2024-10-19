@@ -13,7 +13,7 @@ class DeliveryDetailsScreen extends StatelessWidget{
       appBar: AppBar(title: const Text('Delivery')),
       body: Padding(
         padding: const EdgeInsets.only(top:8.0),
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

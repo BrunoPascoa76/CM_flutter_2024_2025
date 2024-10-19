@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _pageController = PageController(
+    final pageController = PageController(
       initialPage: 1,
       keepPage: true
     );
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const Lobby(),
           '/deliveryMap': (context) => PageView(
-            controller:_pageController,
+            controller:pageController,
             children:const [DeliveryDetailsScreen(),DeliveryMapScreen()]
           ),
         },

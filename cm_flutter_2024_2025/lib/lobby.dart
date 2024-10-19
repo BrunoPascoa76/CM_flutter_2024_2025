@@ -20,7 +20,7 @@ class LobbyState extends State<Lobby> {
   bool isReady = false;
   Map<String, dynamic>? messageDetails;
 
-  void _onReadyPressed(DeliveryRouteBloc DeliveryRouteBloc) {
+  void _onReadyPressed(DeliveryRouteBloc deliveryRouteBloc) {
     Timer.periodic(const Duration(seconds: 5), (timer) async {
       final message = await poolDeliveryMessage();
       if (message != null) {
@@ -102,7 +102,7 @@ class LobbyState extends State<Lobby> {
       );
 
       DeliveryRoute deliveryRoute=DeliveryRoute(1,[delivery1,delivery2]);
-      DeliveryRouteBloc.add(DeliveryRouteReceivedEvent(deliveryRoute));
+      deliveryRouteBloc.add(DeliveryRouteReceivedEvent(deliveryRoute));
       Navigator.pushNamed(context, '/deliveryMap');
     } else {
       // Handle the condition when not ready
@@ -154,7 +154,7 @@ class LobbyState extends State<Lobby> {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildReadyButton(),
+              _buildReadyButton(deliveryRouteBloc),
             ],
           ),
         ),
@@ -238,9 +238,9 @@ class LobbyState extends State<Lobby> {
     );
   }
 
-  Widget _buildReadyButton() {
+  Widget _buildReadyButton(DeliveryRouteBloc deliveryRouteBloc) {
     return ElevatedButton(
-      onPressed: _onReadyPressed,
+      onPressed: (){_onReadyPressed(deliveryRouteBloc);},
       style: ElevatedButton.styleFrom(
         backgroundColor: isReady ? Colors.orange : Colors.blue,
         padding: const EdgeInsets.symmetric(vertical: 16),
