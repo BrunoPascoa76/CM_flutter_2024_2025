@@ -76,18 +76,19 @@ class DeliveryRoute {
 //current delivery route
 class DeliveryRouteBloc extends Bloc<DeliveryRouteEvent,DeliveryRoute?> {
   DeliveryRouteBloc() : super(null){
-    on<DeliveryRouteLoadEvent>(_onRouteLoad);
+    on<DeliveryRouteReceivedEvent>(_onRouteReceived);
     on<DeliveryRouteProgressEvent>(_onRouteProgress);
   }
 
-  Future<void> _onRouteLoad(DeliveryRouteLoadEvent event,Emitter<DeliveryRoute?> emit) async{
+  Future<void> _onRouteReceived(DeliveryRouteReceivedEvent event,Emitter<DeliveryRoute?> emit) async{
     var box=await _currentDeliveryRouteBox;
-    emit(box.get(0));
+    box.putAt(0,event.deliveryRoute);
+    emit(event.deliveryRoute);
   }
 
   Future<void> _onRouteProgress(DeliveryRouteProgressEvent event,Emitter<DeliveryRoute?> emit) async{
-    var current_delivery_route=await _currentDeliveryRouteBox;
-    var past_deliveries=await _pastDeliveriesBox;
+    var currentDeliveryRoute=await _currentDeliveryRouteBox;
+    var pastDeliveries=await _pastDeliveriesBox;
     var deliveryRoute=state; //by getting the state only once, we'll be slightly safer against the state changing mid-operation
 
     if(deliveryRoute!=null){
@@ -96,11 +97,11 @@ class DeliveryRouteBloc extends Bloc<DeliveryRouteEvent,DeliveryRoute?> {
       //check if finished
       if(deliveryRoute.getCurrentDelivery()!=null){
         //make sure localdb is updated (in case he closes the app mid-route)
-        current_delivery_route.putAt(0,deliveryRoute);
+        currentDeliveryRoute.putAt(0,deliveryRoute);
         emit(state);
       }else{
-        current_delivery_route.clear();
-        past_deliveries.addAll(deliveryRoute.deliveries);
+        currentDeliveryRoute.clear();
+        pastDeliveries.addAll(deliveryRoute.deliveries);
         emit(null);
       }
     }
@@ -109,7 +110,10 @@ class DeliveryRouteBloc extends Bloc<DeliveryRouteEvent,DeliveryRoute?> {
 
 
 class DeliveryRouteEvent{}
-class DeliveryRouteLoadEvent extends DeliveryRouteEvent{} //load current route
+class DeliveryRouteReceivedEvent extends DeliveryRouteEvent{
+  final DeliveryRoute deliveryRoute;
+  DeliveryRouteReceivedEvent(this.deliveryRoute);
+} //load current route
 class DeliveryRouteProgressEvent extends DeliveryRouteEvent{
   final int pin;
   DeliveryRouteProgressEvent(this.pin);
