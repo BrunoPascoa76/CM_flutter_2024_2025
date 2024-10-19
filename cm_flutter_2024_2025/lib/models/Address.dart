@@ -17,7 +17,7 @@ class Address {
   String state;
 
   @HiveField(4)
-  int zip_code;
+  int zipCode;
    
   @HiveField(5)
   String country;
@@ -28,5 +28,15 @@ class Address {
   @HiveField(7)
   double longitude;
 
-  Address(this.id,this.street,this.city,this.state,this.zip_code,this.country,this.latitude,this.longitude);
+  Address(this.id,this.street,this.city,this.state,this.zipCode,this.country,this.latitude,this.longitude);
+
+  Address.fromJson(Map<String,dynamic> json):
+    id=json["id"] as int,
+    street=json["street"] as String,
+    city=json["city"] as String,
+    state=json["state"] as String,
+    zipCode=json["zipCode"] as int,
+    country=json["country"] as String,
+    latitude=json["latitude"] as double,
+    longitude=json["longitude"] as double;
 }

@@ -11,7 +11,12 @@ class ClientDetails {
   String clientName; 
 
   @HiveField(2)
-  int phoneNumber;
+  String phoneNumber;
 
   ClientDetails(this.id,this.clientName,this.phoneNumber);
+
+  ClientDetails.fromJson(Map<String,dynamic> json):
+    id=json["id"] as int,
+    clientName=json["clientName"] as String,
+    phoneNumber=json["phoneNumer"] as String;
 }

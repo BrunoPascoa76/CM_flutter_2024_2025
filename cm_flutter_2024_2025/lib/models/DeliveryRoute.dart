@@ -47,6 +47,13 @@ class DeliveryRoute {
     }
   }
 
+  //will be ignoring fields I am sure are empty at starting up
+  DeliveryRoute.fromJson(Map<String,dynamic> json):
+    id = json["id"] as int,
+    totalDistance=json["totalDistance"]==null?null:json["totalDistance"] as int,
+    deliveries=(json["deliveries"] as List).map((deliveryJson)=>Delivery.fromJson(deliveryJson)).toList();
+    
+
   bool confirmCurrentDelivery(int pin){
     String pinHashed=sha256.convert(utf8.encode(pin.toString())).toString();
     Delivery? currentDelivery=getCurrentDelivery();

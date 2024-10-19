@@ -21,19 +21,18 @@ class DeliveryAdapter extends TypeAdapter<Delivery> {
       fields[1] as ClientDetails,
       fields[2] as Address,
       fields[3] as Address,
-      fields[4] as DeliveryRoute,
+      fields[8] as String,
       fields[9] as DateTime,
     )
       ..status = fields[5] as String
       ..predictedDeliveryTime = fields[6] as DateTime?
-      ..actualDeliveryTime = fields[7] as DateTime?
-      ..pinHash = fields[8] as String?;
+      ..actualDeliveryTime = fields[7] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Delivery obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -42,8 +41,6 @@ class DeliveryAdapter extends TypeAdapter<Delivery> {
       ..write(obj.pickupAddress)
       ..writeByte(3)
       ..write(obj.deliveryAddress)
-      ..writeByte(4)
-      ..write(obj.route)
       ..writeByte(5)
       ..write(obj.status)
       ..writeByte(6)

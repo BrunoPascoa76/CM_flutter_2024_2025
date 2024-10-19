@@ -41,7 +41,7 @@ class AddressAdapter extends TypeAdapter<Address> {
       ..writeByte(3)
       ..write(obj.state)
       ..writeByte(4)
-      ..write(obj.zip_code)
+      ..write(obj.zipCode)
       ..writeByte(5)
       ..write(obj.country)
       ..writeByte(6)

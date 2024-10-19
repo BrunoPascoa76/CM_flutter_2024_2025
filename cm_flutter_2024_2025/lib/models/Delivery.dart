@@ -19,9 +19,6 @@ class Delivery {
   @HiveField(3)
   Address deliveryAddress;
 
-  @HiveField(4)
-  DeliveryRoute route;
-
   @HiveField(5)
   String status="placed";
 
@@ -32,10 +29,19 @@ class Delivery {
   DateTime? actualDeliveryTime;
 
   @HiveField(8)
-  String? pinHash;
+  String pinHash;
 
   @HiveField(9)
   DateTime createdAt;
 
-  Delivery(this.id,this.clientDetails,this.pickupAddress,this.deliveryAddress,this.route,this.createdAt);
+  Delivery(this.id,this.clientDetails,this.pickupAddress,this.deliveryAddress,this.pinHash,this.createdAt);
+
+  Delivery.fromJson(Map<String,dynamic> json):
+    id=json["id"] as int,
+    clientDetails=ClientDetails.fromJson(json["clientDetails"]),
+    pickupAddress=Address.fromJson(json["clientDetails"]),
+    deliveryAddress=Address.fromJson(json["clientDetails"]),
+    predictedDeliveryTime=json["predictedDeliveryTime"]==null?null:json["predictedDeliveryTime"] as DateTime,
+    pinHash=json["pinHash"] as String,
+    createdAt=DateTime.parse(json["createdAt"]);
 }

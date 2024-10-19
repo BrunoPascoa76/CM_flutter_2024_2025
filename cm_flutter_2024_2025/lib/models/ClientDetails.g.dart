@@ -19,7 +19,7 @@ class ClientDetailsAdapter extends TypeAdapter<ClientDetails> {
     return ClientDetails(
       fields[0] as int,
       fields[1] as String,
-      fields[2] as int,
+      fields[2] as String,
     );
   }
 
