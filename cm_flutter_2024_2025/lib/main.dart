@@ -1,13 +1,15 @@
-import 'package:cm_flutter_2024_2025/map.dart';
-import 'package:cm_flutter_2024_2025/models/Address.dart';
-import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
-import 'package:cm_flutter_2024_2025/models/Delivery.dart';
-import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
-import 'package:cm_flutter_2024_2025/models/Driver.dart';
-import 'package:cm_flutter_2024_2025/zoom_cubit.dart';
+import 'package:cm_flutter_2024_2025/delivery_map.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'lobby.dart';
+import 'models/Address.dart';
+import 'models/ClientDetails.dart';
+import 'models/Delivery.dart';
+import 'models/DeliveryRoute.dart';
+import 'models/Driver.dart';
+import 'zoom_cubit.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -24,41 +26,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
-        ],
-        child: const HomeScreen(),
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Delivery')),
-      body: const MapScreen(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            onPressed: () => context.read<ZoomCubit>().zoomIn(),
-            tooltip: 'Zoom In',
-            child: const Icon(Icons.add),
-          ),
-          const SizedBox(height: 8),
-          FloatingActionButton(
-            onPressed: () => context.read<ZoomCubit>().zoomOut(),
-            tooltip: 'Zoom Out',
-            child: const Icon(Icons.remove),
-          ),
-        ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
+      ],
+      child: MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const Lobby(),
+          '/deliveryMap': (context) => const DeliveryMapScreen(),
+        },
       ),
     );
   }
