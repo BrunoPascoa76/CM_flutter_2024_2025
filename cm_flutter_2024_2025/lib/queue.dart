@@ -7,29 +7,21 @@ final sqs = SQS(
     credentials: AwsClientCredentials(
         accessKey: AWS_SQS_ACCESS_KEY, secretKey: AWS_SQS_SECRET_KEY));
 
-Future<String?> subscribeToTopic() async {
+Future<Message?> poolDeliveryMessage() async {
   try {
-    var response = await sqs.receiveMessage(queueUrl: QUEUE_URL);
-    var str = '';
-    if (response.messages != null) {
-      for (var message in response.messages!) {
-        str += message.body!;
+    var response =
+        await sqs.receiveMessage(queueUrl: QUEUE_URL, maxNumberOfMessages: 1);
 
-        // Delete the message after processing
-        await sqs.deleteMessage(
-          queueUrl: QUEUE_URL,
-          receiptHandle: message.receiptHandle!,
-        );
-      }
-    }
-    sqs.sendMessage(
-        messageBody: 'message from flutter2',
-        messageGroupId: 'flutter',
-        queueUrl: QUEUE_URL);
-    debugPrint('Response: $str');
-    return str;
+    return response.messages?.first;
   } catch (e) {
     debugPrint('Failed to subscribe: $e');
     return null;
   }
+}
+
+Future<void> deleteMessageFromQueue(String receiptHandle) async {
+  sqs.deleteMessage(
+    queueUrl: QUEUE_URL,
+    receiptHandle: receiptHandle,
+  );
 }
