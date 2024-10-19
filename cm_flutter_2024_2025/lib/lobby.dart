@@ -15,10 +15,14 @@ class LobbyState extends State<Lobby> {
   bool isReady = false;
   Map<String, dynamic>? messageDetails;
 
+  Timer? _messageCheckTimer;
+
   void _onReadyPressed() {
-    Timer.periodic(const Duration(seconds: 5), (timer) async {
+    _messageCheckTimer =
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
       final message = await poolDeliveryMessage();
       if (message != null) {
+        _messageCheckTimer?.cancel(); // Stop the timer for checking messages
         debugPrint('poolDeliveryMessageSuccess');
         setState(() {
           if (message.body != null) {
