@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'DeliveryRoute.dart';
+part of 'delivery_route.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:cm_flutter_2024_2025/models/Delivery.dart';
-import 'package:cm_flutter_2024_2025/models/Driver.dart';
+import 'package:cm_flutter_2024_2025/models/delivery.dart';
+import 'package:cm_flutter_2024_2025/models/driver.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
-part 'DeliveryRoute.g.dart';
+part 'delivery_route.g.dart';
 
 Future<Box<DeliveryRoute>> get _currentDeliveryRouteBox async =>
   await Hive.openBox<DeliveryRoute>("current_delivery_route");

@@ -1,5 +1,5 @@
-import 'package:cm_flutter_2024_2025/models/Delivery.dart';
-import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
+import 'package:cm_flutter_2024_2025/models/delivery.dart';
+import 'package:cm_flutter_2024_2025/models/delivery_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +8,8 @@ class DeliveryDetailsScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    Delivery? currentDelivery=context.watch<DeliveryRouteBloc>().state?.getCurrentDelivery();
+    DeliveryRoute? currentDelivery=context.watch<DeliveryRouteBloc>().state;
+    print(currentDelivery);
     return Scaffold(
       appBar: AppBar(title: const Text('Delivery')),
       body: Padding(

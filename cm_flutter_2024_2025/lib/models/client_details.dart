@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'ClientDetails.g.dart';
+part 'client_details.g.dart';
 
 @HiveType(typeId: 3)
 class ClientDetails {

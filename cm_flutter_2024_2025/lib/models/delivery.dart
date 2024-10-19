@@ -1,8 +1,8 @@
-import 'package:cm_flutter_2024_2025/models/Address.dart';
-import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
+import 'package:cm_flutter_2024_2025/models/address.dart';
+import 'package:cm_flutter_2024_2025/models/client_details.dart';
 import 'package:hive/hive.dart';
 
-part 'Delivery.g.dart';
+part 'delivery.g.dart';
 
 @HiveType(typeId: 5)
 class Delivery {

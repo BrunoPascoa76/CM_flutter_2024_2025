@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'Driver.g.dart';
+part 'driver.g.dart';
 
 @HiveType(typeId: 1) //typeId should be unique for each model
 class Driver {

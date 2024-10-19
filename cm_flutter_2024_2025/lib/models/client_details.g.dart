@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ClientDetails.dart';
+part of 'client_details.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

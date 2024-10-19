@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:cm_flutter_2024_2025/models/Address.dart';
-import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
-import 'package:cm_flutter_2024_2025/models/Delivery.dart';
-import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
+import 'package:cm_flutter_2024_2025/models/address.dart';
+import 'package:cm_flutter_2024_2025/models/client_details.dart';
+import 'package:cm_flutter_2024_2025/models/delivery.dart';
+import 'package:cm_flutter_2024_2025/models/delivery_route.dart';
 import 'package:cm_flutter_2024_2025/queue.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Lobby extends StatefulWidget {
   const Lobby({super.key});
@@ -19,7 +20,7 @@ class LobbyState extends State<Lobby> {
   bool isReady = false;
   Map<String, dynamic>? messageDetails;
 
-  void _onReadyPressed() {
+  void _onReadyPressed(DeliveryRouteBloc deliveryRouteBloc) {
     Timer.periodic(const Duration(seconds: 5), (timer) async {
       final message = await poolDeliveryMessage();
       if (message != null) {
@@ -113,7 +114,6 @@ class LobbyState extends State<Lobby> {
       );
     }
   }
-  }
 
   void _onAcceptDeliveryPressed() {
     // Handle the accept delivery action
@@ -153,7 +153,7 @@ class LobbyState extends State<Lobby> {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildReadyButton(),
+              _buildReadyButton(BlocProvider.of<DeliveryRouteBloc>(context)),
             ],
           ),
         ),
@@ -237,9 +237,9 @@ class LobbyState extends State<Lobby> {
     );
   }
 
-  Widget _buildReadyButton() {
+  Widget _buildReadyButton(DeliveryRouteBloc deliveryRouteBloc) {
     return ElevatedButton(
-      onPressed: _onReadyPressed,
+      onPressed: (){_onReadyPressed(deliveryRouteBloc);},
       style: ElevatedButton.styleFrom(
         backgroundColor: isReady ? Colors.orange : Colors.blue,
         padding: const EdgeInsets.symmetric(vertical: 16),

@@ -1,16 +1,16 @@
 import 'package:cm_flutter_2024_2025/delivery_details_screen.dart';
 import 'package:cm_flutter_2024_2025/delivery_map.dart';
-import 'package:cm_flutter_2024_2025/utils/QrCodeScanner.dart';
+import 'package:cm_flutter_2024_2025/utils/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'lobby.dart';
-import 'models/Address.dart';
-import 'models/ClientDetails.dart';
-import 'models/Delivery.dart';
-import 'models/DeliveryRoute.dart';
-import 'models/Driver.dart';
+import 'models/address.dart';
+import 'models/client_details.dart';
+import 'models/delivery.dart';
+import 'models/delivery_route.dart';
+import 'models/driver.dart';
 import 'zoom_cubit.dart';
 
 void main() async {

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part 'Address.g.dart';
+part 'address.g.dart';
 
 @HiveType(typeId: 2)
 class Address {
