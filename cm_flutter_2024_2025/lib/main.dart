@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
-        BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
         BlocProvider<QrCodeBloc>(create: (_)=>QrCodeBloc()),
         BlocProvider<DeliveryRouteBloc>(create: (_)=>DeliveryRouteBloc()),
       ],

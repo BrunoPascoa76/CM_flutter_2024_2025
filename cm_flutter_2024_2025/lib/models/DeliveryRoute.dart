@@ -32,12 +32,12 @@ class DeliveryRoute {
   int? totalDistance;
 
   @HiveField(5)
-  List<Delivery> deliveries=[];
+  List<Delivery> deliveries;
 
   @HiveField(6)
   int current_delivery=0;
 
-  DeliveryRoute(this.id);
+  DeliveryRoute(this.id,this.deliveries);
 
   Delivery? getCurrentDelivery(){
     if (current_delivery<deliveries.length){
@@ -82,7 +82,8 @@ class DeliveryRouteBloc extends Bloc<DeliveryRouteEvent,DeliveryRoute?> {
 
   Future<void> _onRouteReceived(DeliveryRouteReceivedEvent event,Emitter<DeliveryRoute?> emit) async{
     var box=await _currentDeliveryRouteBox;
-    box.putAt(0,event.deliveryRoute);
+    box.clear();
+    box.add(event.deliveryRoute);
     emit(event.deliveryRoute);
   }
 

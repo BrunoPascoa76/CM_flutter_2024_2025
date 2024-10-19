@@ -18,12 +18,12 @@ class DeliveryRouteAdapter extends TypeAdapter<DeliveryRoute> {
     };
     return DeliveryRoute(
       fields[0] as int,
+      (fields[5] as List).cast<Delivery>(),
     )
       ..driver = fields[1] as Driver?
       ..startTime = fields[2] as DateTime?
       ..endTime = fields[3] as DateTime?
       ..totalDistance = fields[4] as int?
-      ..deliveries = (fields[5] as List).cast<Delivery>()
       ..current_delivery = fields[6] as int;
   }
 

@@ -1,6 +1,5 @@
 import 'package:cm_flutter_2024_2025/models/Address.dart';
 import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
-import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
 import 'package:hive/hive.dart';
 
 part 'Delivery.g.dart';
