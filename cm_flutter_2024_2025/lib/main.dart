@@ -4,6 +4,7 @@ import 'package:cm_flutter_2024_2025/models/ClientDetails.dart';
 import 'package:cm_flutter_2024_2025/models/Delivery.dart';
 import 'package:cm_flutter_2024_2025/models/DeliveryRoute.dart';
 import 'package:cm_flutter_2024_2025/models/Driver.dart';
+import 'package:cm_flutter_2024_2025/utils/QrCodeScanner.dart';
 import 'package:cm_flutter_2024_2025/zoom_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
+          BlocProvider<QrCodeBloc>(create: (_)=>QrCodeBloc()),
+          BlocProvider<DeliveryRouteBloc>(create: (_)=>DeliveryRouteBloc()),
         ],
         child: const HomeScreen(),
       ),
