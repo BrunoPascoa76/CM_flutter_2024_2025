@@ -17,7 +17,7 @@ class Lobby extends StatefulWidget {
 }
 
 class LobbyState extends State<Lobby> {
-  bool isReady = true;
+  bool isReady = false;
   Map<String, dynamic>? messageDetails;
 
   Timer? _messageCheckTimer;
