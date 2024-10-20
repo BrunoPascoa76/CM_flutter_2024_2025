@@ -7,7 +7,7 @@ class DeliveryDetailsScreen extends StatefulWidget {
   const DeliveryDetailsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => new DeliveryDetailsScreenState();
+  State<StatefulWidget> createState() => DeliveryDetailsScreenState();
 }
 
 class DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {

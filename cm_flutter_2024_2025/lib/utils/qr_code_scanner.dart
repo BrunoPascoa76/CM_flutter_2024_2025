@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cm_flutter_2024_2025/models/delivery_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,20 +10,34 @@ class QrCodeScanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MobileScanner(
-      controller: controller,
-      onDetect: (BarcodeCapture capture) async {
-        await controller.stop();
-        final List<Barcode> barcodes = capture.barcodes;
-        //will leave this in for debugging purposes
-        int? pin=_onQrCodeScanned(barcodes);
-        DeliveryRouteBloc bloc=BlocProvider.of<DeliveryRouteBloc>(context);
-        if(pin!=null){
-          bloc.add(DeliveryRouteProgressEvent(pin));
-        }
-        bloc.state!.current_delivery; 
-        Navigator.pop(context);
-      },
+    return Stack(
+      children: [
+        MobileScanner(
+          controller: controller,
+          onDetect: (BarcodeCapture capture) async {
+            await controller.stop();
+            final List<Barcode> barcodes = capture.barcodes;
+            //will leave this in for debugging purposes
+            int? pin=_onQrCodeScanned(barcodes);
+            DeliveryRouteBloc bloc=BlocProvider.of<DeliveryRouteBloc>(context);
+            if(pin!=null){
+              bloc.add(DeliveryRouteProgressEvent(pin));
+            }
+            bloc.state!.current_delivery; 
+            Navigator.pop(context);
+          },
+        ),
+        SafeArea(
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+              iconSize: 30,
+              onPressed: ()=>Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back)
+            )
+          ),
+        )
+      ]
     );
   }
 
