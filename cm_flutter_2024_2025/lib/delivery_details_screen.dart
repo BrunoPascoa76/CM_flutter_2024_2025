@@ -20,7 +20,11 @@ class DeliveryDetailsScreenState extends State<DeliveryDetailsScreen> {
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: BlocConsumer<DeliveryRouteBloc, DeliveryRoute?>(
-                  listener: (context, state) {},
+                  listener: (context, state) {
+                    if(state==null){
+                      Navigator.pop(context);
+                    }
+                  },
                   builder: (context, state) {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

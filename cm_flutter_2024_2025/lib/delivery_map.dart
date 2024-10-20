@@ -1,5 +1,6 @@
 import 'package:cm_flutter_2024_2025/map.dart';
 import 'package:cm_flutter_2024_2025/map_zoom_cubit.dart';
+import 'package:cm_flutter_2024_2025/models/delivery_route.dart';
 import 'package:cm_flutter_2024_2025/secrets.dart';
 import 'package:cm_flutter_2024_2025/utils/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
@@ -84,12 +85,25 @@ class DeliveryMapScreen extends StatelessWidget {
             child: const Icon(Icons.remove),
           ),
           const SizedBox(height: 20),
-          FloatingActionButton(
-              heroTag: "qrCode",
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => QrCodeScanner())),
-              tooltip: 'Scan QR Code',
-              child: const Icon(Icons.qr_code)),
+          BlocConsumer<DeliveryRouteBloc, DeliveryRoute?>(
+            listener: (context,state){
+              if(state==null){
+                Navigator.pop(context);
+              }
+            },
+            builder: (context,state){
+              if(state!=null){ //just as prevention
+                return FloatingActionButton(
+                  heroTag: "qrCode",
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => QrCodeScanner())),
+                  tooltip: 'Scan QR Code',
+                  child: const Icon(Icons.qr_code));
+                }else{
+                  return const SizedBox(height: 0); //just because I need to return something
+                }
+              },
+          ),
           const SizedBox(height: 8),
           FloatingActionButton(
             onPressed: () => downloadMapRegion(context, 1),
