@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => const Lobby(),
           '/deliveryMap': (context) => PageView(
             controller:pageController,
-            children:const [DeliveryDetailsScreen(),DeliveryMapScreen()]
+            children:[DeliveryDetailsScreen(),const DeliveryMapScreen()]
           ),
         },
       ),

@@ -17,7 +17,7 @@ class Lobby extends StatefulWidget {
 }
 
 class LobbyState extends State<Lobby> {
-  bool isReady = false;
+  bool isReady = true;
   Map<String, dynamic>? messageDetails;
 
   void _onReadyPressed(DeliveryRouteBloc deliveryRouteBloc) {
@@ -66,7 +66,7 @@ class LobbyState extends State<Lobby> {
           38.7184,
           -9.1418
         ),
-        "abc123", // pinHash
+        "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
         DateTime.now()
       );        
 
@@ -97,7 +97,7 @@ class LobbyState extends State<Lobby> {
           41.1409,
           -8.6132
         ),
-        "xyz789", // pinHash
+        "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
         DateTime.now()
       );
 
