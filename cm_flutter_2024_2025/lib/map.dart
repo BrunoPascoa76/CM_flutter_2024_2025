@@ -1,9 +1,12 @@
+import 'package:cm_flutter_2024_2025/map_zoom_cubit.dart';
+import 'package:cm_flutter_2024_2025/models/address.dart';
+import 'package:cm_flutter_2024_2025/models/delivery_route.dart';
 import 'package:cm_flutter_2024_2025/secrets.dart';
-import 'package:cm_flutter_2024_2025/zoom_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
@@ -36,9 +39,20 @@ class MapScreenState extends State<MapScreen> {
       _currentPosition = currentPosition;
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
-      _mapController.move(currentPosition, 17);
-      _drawRoute(currentPosition.latitude, currentPosition.longitude);
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) {
+        return;
+      }
+      context.read<MapZoomCubit>().setZoom(15);
+      _mapController.move(currentPosition, context.read<MapZoomCubit>().state);
+      final Address destinationAddress = context
+          .read<DeliveryRouteBloc>()
+          .state!
+          .getCurrentDelivery()!
+          .deliveryAddress;
+      final LatLng deliveryLatLong =
+          LatLng(destinationAddress.latitude, destinationAddress.longitude);
+      _drawRoute(currentPosition, deliveryLatLong);
     });
   }
 
@@ -48,11 +62,13 @@ class MapScreenState extends State<MapScreen> {
     return LatLng(position.latitude, position.longitude);
   }
 
-  void _drawRoute(double lat, double long) async {
+  void _drawRoute(LatLng start, LatLng end) async {
     // Define start and end coordinates
     debugPrint('drawing the route');
-    var startCoordinate = ORSCoordinate(latitude: lat, longitude: long);
-    var endCoordinate = const ORSCoordinate(latitude: 41.15, longitude: -8.62);
+    var startCoordinate =
+        ORSCoordinate(latitude: start.latitude, longitude: start.longitude);
+    var endCoordinate =
+        ORSCoordinate(latitude: end.latitude, longitude: end.longitude);
     try {
       // Fetch route coordinates
       final List<ORSCoordinate> routeCoordinates =
@@ -66,6 +82,18 @@ class MapScreenState extends State<MapScreen> {
             .map((coord) => LatLng(coord.latitude, coord.longitude))
             .toList();
       });
+
+      // Calculate the bearing (direction) from start to end
+      double bearing = Geolocator.bearingBetween(
+        start.latitude,
+        start.longitude,
+        end.latitude,
+        end.longitude,
+      );
+      if (!mounted) return;
+      // Move the camera to the start position with the correct bearing
+      _mapController.moveAndRotate(
+          start, context.read<MapZoomCubit>().state, bearing);
     } catch (e) {
       debugPrint('Error fetching route: $e');
     }
@@ -96,12 +124,12 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ZoomCubit, double>(
+    return BlocListener<MapZoomCubit, double>(
       listener: (context, zoomLevel) {
         final center = _mapController.camera.center;
         _mapController.move(center, zoomLevel);
       },
-      child: BlocBuilder<ZoomCubit, double>(
+      child: BlocBuilder<MapZoomCubit, double>(
         builder: (context, zoomLevel) {
           return _currentPosition == null
               ? const Center(child: CircularProgressIndicator())
@@ -110,13 +138,20 @@ class MapScreenState extends State<MapScreen> {
                   options: MapOptions(
                     initialCenter:
                         _currentPosition ?? const LatLng(40.64, -8.65),
-                    initialZoom: zoomLevel,
+                    initialZoom: context.read<MapZoomCubit>().state,
+                    onPositionChanged: (position, hasGesture) {
+                      if (hasGesture) {
+                        context.read<MapZoomCubit>().setZoom(position.zoom);
+                      }
+                    },
                   ),
                   children: [
                     TileLayer(
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: MAP_USER_AGENT_PACKAGE_NAME,
+                      tileProvider:
+                          const FMTCStore('mapStore').getTileProvider(),
                     ),
                     CurrentLocationLayer(),
                     PolylineLayer(

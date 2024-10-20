@@ -3,17 +3,22 @@ import 'package:cm_flutter_2024_2025/delivery_map.dart';
 import 'package:cm_flutter_2024_2025/utils/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'lobby.dart';
+import 'map_zoom_cubit.dart';
 import 'models/address.dart';
 import 'models/client_details.dart';
 import 'models/delivery.dart';
 import 'models/delivery_route.dart';
 import 'models/driver.dart';
-import 'zoom_cubit.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FMTCObjectBoxBackend().initialise();
+  await const FMTCStore('mapStore').manage.create();
+
   await Hive.initFlutter();
   Hive.registerAdapter(AddressAdapter());
   Hive.registerAdapter(ClientDetailsAdapter());
@@ -28,24 +33,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pageController = PageController(
-      initialPage: 1,
-      keepPage: true
-    );
+    final pageController = PageController(initialPage: 1, keepPage: true);
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ZoomCubit>(create: (_) => ZoomCubit()),
-        BlocProvider<QrCodeBloc>(create: (_)=>QrCodeBloc()),
-        BlocProvider<DeliveryRouteBloc>(create: (_)=>DeliveryRouteBloc()),
+        BlocProvider<MapZoomCubit>(create: (_) => MapZoomCubit()),
+        BlocProvider<QrCodeBloc>(create: (_) => QrCodeBloc()),
+        BlocProvider<DeliveryRouteBloc>(create: (_) => DeliveryRouteBloc()),
       ],
       child: MaterialApp(
         initialRoute: '/',
         routes: {
           '/': (context) => const Lobby(),
           '/deliveryMap': (context) => PageView(
-            controller:pageController,
-            children:[DeliveryDetailsScreen(),const DeliveryMapScreen()]
-          ),
+              controller: pageController,
+              children: const [DeliveryDetailsScreen(), DeliveryMapScreen()]),
         },
       ),
     );

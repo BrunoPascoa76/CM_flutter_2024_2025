@@ -14,7 +14,7 @@ Future<Message?> poolDeliveryMessage() async {
 
     return response.messages?.first;
   } catch (e) {
-    debugPrint('Failed to subscribe: $e');
+    debugPrint('There is no new message: $e');
     return null;
   }
 }
