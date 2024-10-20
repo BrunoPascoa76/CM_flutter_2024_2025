@@ -37,7 +37,7 @@ class MapScreenState extends State<MapScreen> {
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      _mapController.move(currentPosition, 5);
+      _mapController.move(currentPosition, 17);
       _drawRoute(currentPosition.latitude, currentPosition.longitude);
     });
   }

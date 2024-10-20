@@ -16,12 +16,14 @@ class DeliveryMapScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
+            heroTag: 'zoomIn',
             onPressed: () => context.read<ZoomCubit>().zoomIn(),
             tooltip: 'Zoom In',
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
+            heroTag: 'zoomOut',
             onPressed: () => context.read<ZoomCubit>().zoomOut(),
             tooltip: 'Zoom Out',
             child: const Icon(Icons.remove),
