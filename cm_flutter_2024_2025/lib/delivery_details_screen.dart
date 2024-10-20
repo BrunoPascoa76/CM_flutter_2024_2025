@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeliveryDetailsScreen extends StatefulWidget {
+  const DeliveryDetailsScreen({super.key});
+
   @override
-  State<StatefulWidget> createState() => new DeliveryDetailsScreenState();
+  State<StatefulWidget> createState() => DeliveryDetailsScreenState();
 }
 
 class DeliveryDetailsScreenState extends State<DeliveryDetailsScreen>{
