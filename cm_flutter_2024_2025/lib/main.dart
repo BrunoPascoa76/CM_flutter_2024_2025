@@ -28,12 +28,31 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  late PageController pageController;
+  int activePageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: 0, keepPage: true);
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final pageController = PageController(initialPage: 1, keepPage: true);
     return MultiBlocProvider(
       providers: [
         BlocProvider<MapZoomCubit>(create: (_) => MapZoomCubit()),
@@ -43,11 +62,35 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          '/': (context) => const Lobby(),
           '/deliveryMap': (context) => PageView(
               controller: pageController,
               children: const [DeliveryDetailsScreen(), DeliveryMapScreen()]),
         },
+        home: Scaffold(
+          body: PageView(
+            controller: pageController,
+            children: const [Lobby(), DeliveryDetailsScreen()],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: activePageIndex,
+            onTap: (index) {
+              setState(() {
+                activePageIndex = index;
+              });
+              pageController.jumpToPage(index);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.motorcycle),
+                label: 'Lobby',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.delivery_dining),
+                label: 'Delivery Details',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

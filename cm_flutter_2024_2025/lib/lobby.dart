@@ -50,8 +50,8 @@ class LobbyState extends State<Lobby> {
     BlocProvider.of<DeliveryRouteBloc>(context)
         .add(DeliveryRouteReceivedEvent(deliveryRoute));
 
-    Future.delayed(const Duration(seconds: 3), () {
-      if (isReady) {
+    Future.delayed(const Duration(seconds: 2), () {
+      if (isReady && mounted) {
         setState(() {
           _currentDelivery = delivery1;
           isLoading = false;
@@ -95,6 +95,12 @@ class LobbyState extends State<Lobby> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _messageCheckTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -260,9 +266,10 @@ class LobbyState extends State<Lobby> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Ready to Deliver?', style: TextStyle(fontSize: 22)),
+          const Text('Ready to Deliver?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(
-            width: 40,
+            width: 30,
           ),
           Switch(
             value: isReady,
